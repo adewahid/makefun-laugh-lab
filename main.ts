@@ -9,8 +9,12 @@ const entryText = firstBeat + " " + secondBeat;
 // Refuse to write anything out of spec instead of submitting junk.
 const MAX_CHARS = 200;
 
-if (entryText.trim().length === 0 || entryText.length > MAX_CHARS) {
-  throw new Error("entry line out of spec: " + entryText.length + " characters");
+const trimmed = entryText.trim();
+// Count code points, not UTF-16 units, so multi-byte characters count once.
+const charCount = [...trimmed].length;
+
+if (charCount === 0 || charCount > MAX_CHARS) {
+  throw new Error("entry line out of spec: " + charCount + " characters");
 }
 
 mkdirSync("/output", { recursive: true });
